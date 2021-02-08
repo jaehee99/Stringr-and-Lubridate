@@ -43,11 +43,20 @@ which is most commonly used outside of the United States. The dictionary most of
 [Tournament Word List](https://en.wikipedia.org/wiki/Official_Tournament_and_Club_Word_List).
 
 **WARNING**: Do not try `str_view()` or `str_view_all()` on these data.It will stall your computer.
+load packages
+```{r}
+library(tidyverse)
+library(stringr)
+library(readr)
+```
 
 1. Use a readr function to load the 2015 list of Collins Scrabble Words into R from your data folder or from 
    <https://data-science-master.github.io/lectures/data/words.txt>  
    + (note: "NA" is an official Scrabble word).
-   
+```{r}
+read_delim('https://data-science-master.github.io/lectures/data/words.txt', delim = "|") -> collins_scrabble
+```
+
 2. What are the six longest words that have the most "X"'s in them?
 
 3. How many words have an identical first and second half of the word? If a word has an odd number of letters, exclude the middle character.  
