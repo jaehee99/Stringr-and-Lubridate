@@ -59,12 +59,32 @@ read_delim('https://data-science-master.github.io/lectures/data/words.txt', deli
 
 2. What are the six longest words that have the most "X"'s in them?
 
+```{r}
+
+collins_scrabble %>%
+  mutate(length_of_word = str_length(word)) %>%  #make new column for length_of_word
+  mutate(count_X = str_count(word,"X")) %>% #make new column for counting "X"
+  arrange(desc(count_X)) -> collins_scrabble_1 
+  
+collins_scrabble_1 %>%  
+  select(count_X) %>%  
+  head(1) -> most_X  #This will tell me the most "X"'s count which is 2
+
+collins_scrabble_1 %>%  
+  filter(count_X == most_X$count_X[1]) %>% 
+  arrange(desc(length_of_word)) %>%
+  head() %>%  # show 6 longest words 
+  select(word)
+```
+
 3. How many words have an identical first and second half of the word? If a word has an odd number of letters, exclude the middle character.  
   - MURMUR counts because MUR is both the first and second half.
   - JIGAJIG counts because the middle A is excluded so JIG is both the first and second half. 
   - Save the results to a variable.
-    
+
+  
 4. Use the results from 3 to find the longest word with an identical first and second half of the word?
+
 
 # Civil War Battles
 
