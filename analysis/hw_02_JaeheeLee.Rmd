@@ -98,6 +98,13 @@ collins_scrabble_2 %>%
   
 4. Use the results from 3 to find the longest word with an identical first and second half of the word?
 
+```{r}
+collins_scrabble_2 %>% 
+  arrange(desc(length_of_word)) %>%  
+  head(1) %>% 
+  select(word)
+  
+```
 
 # Civil War Battles
 
