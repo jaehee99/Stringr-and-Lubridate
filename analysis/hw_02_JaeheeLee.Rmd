@@ -77,10 +77,23 @@ collins_scrabble_1 %>%
   select(word)
 ```
 
+
 3. How many words have an identical first and second half of the word? If a word has an odd number of letters, exclude the middle character.  
   - MURMUR counts because MUR is both the first and second half.
   - JIGAJIG counts because the middle A is excluded so JIG is both the first and second half. 
   - Save the results to a variable.
+```{r}
+collins_scrabble_1 %>%  
+  mutate(is_even = if_else(str_length(word) %% 2 == 0,  "yes", "no")) %>% 
+  mutate(first_half = if_else(is_even == "yes", 
+                              str_sub(word, 1, length_of_word/2), str_sub(word, 1, floor(length_of_word/2)))) %>%
+  mutate(second_half = if_else(is_even == "no", 
+                               str_sub(word, (length_of_word/2)+1, length_of_word), str_sub(word, ceiling(length_of_word/2 +1), length_of_word))) %>%  
+  filter(first_half == second_half) -> collins_scrabble_2
+
+collins_scrabble_2 %>% 
+  tally() -> number_identical_first_and_second_half
+```
 
   
 4. Use the results from 3 to find the longest word with an identical first and second half of the word?
