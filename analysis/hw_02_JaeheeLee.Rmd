@@ -124,7 +124,11 @@ Variables include:
 - `Theater`: An attempt to to identify which theater of war is most associated with the battle
     
 1. Use a readr function and relative paths to load the data into R.
-    
+```{r}
+civil_war_data <- read_csv("civil_war_theater.csv")
+str(civil_war_data)
+```
+
 The next several questions will help you take the dates from all the different formats and create a consistent set of start date and end date variables in the data frame. We will start by calculating how many years, and months are in each battle.
 
 2. Add a variable to the data frame with the number of years for each battle.  
