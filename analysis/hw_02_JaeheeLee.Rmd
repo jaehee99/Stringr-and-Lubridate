@@ -136,6 +136,13 @@ The next several questions will help you take the dates from all the different f
 - Create a character variable as follows. This can be used as a pattern in a regular expression.  
    
 - Use `year_regex` to now count the number of years in each battle, add this to the data frame,  and save the data frame.
+```{r}
+year_regex <- stringr::str_c(1861:1865, collapse = "|")
+year_regex
+
+civil_war_data %>%  
+  mutate(year = str_extract(Date, year_regex)) -> civil_war_data_1
+```
 
 3. Add a variable to the data frame with the number of months for each battle.  
 - Consider R's built-in vector of month names: `month.name`.
