@@ -254,16 +254,36 @@ bind_rows(one_day_updated, multiple_days_1month_new,months_not_years_new, multip
 ```{r}
 civil_war %>%  
   mutate(days = difftime(civil_war$Start, civil_war$End, units = "days" )) %>%  
-  arrange(-desc(days)) %>%  
+  arrange(-desc(days)) -> civil_war_with_days
+civil_war_with_days$days <- abs(civil_war_with_days$days)
+ 
+civil_war_with_days %>%  
   head(1) %>%  
   select(Battle, days) -> the_longest_battle
 the_longest_battle
 ```
 
 9. Is there an association between the CWSAC significance of a battle and its duration?  
-- Create an appropriate plot. 
-- Interpret the plot in one sentence to answer the question.
+-Extra Credit: Test for a linear relationship using lm() and interpret the results in one sentence based on the p
+-value and adjusted R-squared.
+```{r}
+# - Create an appropriate plot. 
+library(ggplot2)
+library(ggthemes)
+ggplot(data = civil_war_with_days, aes(y = days , x =factor(CWSAC)))+
+  geom_boxplot(color="orange", fill="yellow", alpha=0.2)+ 
+  xlab("CWSAC")+
+  ylab("Days")+
+  theme_classic()
+# - Interpret the plot in one sentence to answer the question.
+# When 'A rating of the military significance of the battle by the Civil War Sites Advisory Commission' is `A` = #Decisive,the days of the battle spanned have the highest median compared to other `B` = Major, `C` = Formative, `D` = #Limited
 
+# -Extra Credit: Test for a linear relationship using lm() and interpret the results in one sentence based on the p
+# -value and adjusted R-squared.
+fit <- lm(days ~ factor(CWSAC), data = civil_war_with_days)
+fit
+summary(fit)
+```
 
 
 
