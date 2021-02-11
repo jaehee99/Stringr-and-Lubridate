@@ -104,7 +104,6 @@ collins_scrabble_2 %>%
   arrange(desc(length_of_word)) %>%  
   head(1) %>% 
   select(word)
-  
 ```
 
 # Civil War Battles
@@ -165,7 +164,6 @@ civil_war_data %>%
 civil_war_data %>%  
   mutate(hyphen = str_detect(Date, "-")) %>%  
   mutate(multiple_days = if_else(hyphen == "TRUE",  "TRUE", "FALSE")) -> civil_war_data
-
 ```
 
 
@@ -182,7 +180,7 @@ civil_war_data %>%
   filter(multiple_days == "TRUE") %>%  
   filter(year_count == 1) %>%  
   filter(month_count == 1) %>%  
-  filter(hyphen == "TRUE") -> multiple_days_one_month
+  filter(hyphen == "TRUE") -> multiple_days_1month
 ```
    
    
@@ -191,7 +189,7 @@ civil_war_data %>%
 civil_war_data %>%  
   filter(multiple_days == "TRUE") %>%  
   filter(year_count == 1) %>%  
-  filter(month_count == 2) -> multiple_months_not_years
+  filter(month_count == 2) -> months_not_years
 ```
    
    + a data frame with the data for only those battles spanning multiple years.
@@ -201,9 +199,7 @@ civil_war_data %>%
   filter(year_count == 2) -> multiple_years
 ```
    
-
-
-6. For each of the four new data frames,  
+  6. For each of the four new data frames,  
   - Add two new variables:  
     + `Start` should contain the start-date of each battle. 
     + `End` should contain the end-date of each battle.
@@ -217,24 +213,31 @@ one_day %>%
   mutate(Start = Date) %>%  
   mutate(End = Date) %>%  
   select(-Date)-> one_day_updated
-#2 
-separate(data = multiple_days_one_month, col = Date, sep = "-", into = c("Start", "End")) -> multiple_days_one_month_updated
-multiple_days_one_month_updated %>%  
-  unite(Start, c("Start", "year")) %>%  
-  unite(End, c(End, month_names)) -> multiple_days_one_month_updated
-# 3 
-separate(data = multiple_months_not_years, col = Date, sep = "-", into = c("Start", "End")) -> multiple_months_not_years_updated
-multiple_months_not_years_updated %>%  
-  unite(Start, c("Start", "year")) -> multiple_months_not_years_updated
+one_day_updated$Start <- as.Date(one_day_updated$Start, "%B %d, %Y")
+one_day_updated$End <- as.Date(one_day_updated$End, "%B %d, %Y")
 
+#2 
+separate(data = multiple_days_1month, col = Date, sep = "-", into = c("Start", "End")) -> multiple_days_1month_new
+multiple_days_1month_new %>%  
+  unite(Start, c("Start", "year")) %>%  
+  unite(End, c("End", "month_names")) -> multiple_days_1month_new
+multiple_days_1month_new$Start <- as.Date(multiple_days_1month_new$Start, "%B %d_%Y")
+multiple_days_1month_new$End <- as.Date(multiple_days_1month_new$End, "%d, %Y_%B")
+# 3 
+separate(data = months_not_years, col = Date, sep = "-", into = c("Start", "End")) -> months_not_years_new
+months_not_years_new %>%  
+  unite(Start, c("Start", "year")) -> months_not_years_new
+months_not_years_new$Start <- as.Date(months_not_years_new$Start, "%B %d _%Y")
+months_not_years_new$End <- as.Date(months_not_years_new$End, "%B %d, %Y")
 # 4
 separate(data = multiple_years, col = Date, sep = "-", into=c("Start", "End")) -> multiple_years_updated
+multiple_years_updated$Start <- as.Date(multiple_years_updated$Start, "%B %d, %Y")
+multiple_years_updated$End <- as.Date(multiple_years_updated$End, "%B %d, %Y")
 ```
   
 7. Create a new data frame with all the battles and the Start and End  dates by binding the rows of the four data frames as updated in part 6 
 ```{r}
 bind_rows(one_day_updated, multiple_days_one_month_updated,multiple_months_not_years_updated, multiple_years_updated) -> civil_war
-
 ```
 
 8. Calculate the number of days each battle spanned.  
@@ -242,16 +245,16 @@ bind_rows(one_day_updated, multiple_days_one_month_updated,multiple_months_not_y
 - How long did it last?
 ```{r}
 
+
 ```
 
 9. Is there an association between the CWSAC significance of a battle and its duration?  
 - Create an appropriate plot. 
 - Interpret the plot in one sentence to answer the question.
-- Extra Credit: Test for a linear relationship using `lm()` and interpret the results in one sentence based on the $p$-value and adjusted R-squared.
-    
-10. Extra Credit: Did the [theaters of war](https://en.wikipedia.org/wiki/Theater_(warfare)) shift during the American Civil War?  
-- Reproduce this plot in R (filter out states with two or fewer battles.)
-- Interpret the plot in one sentence.
+```{r}
+
+```
+
 
 
 
