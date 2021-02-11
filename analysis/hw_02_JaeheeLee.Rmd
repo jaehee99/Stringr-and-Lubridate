@@ -285,8 +285,15 @@ fit
 summary(fit)
 ```
 
-
-
+10. Extra Credit: Did the theaters of war shift during the American Civil War?
+-Reproduce this plot in R (filter out states with two or fewer battles.)
+-Interpret the plot in one sentence.
+```{r}
+# Basic box plot
+ggplot(civil_war_with_days, aes(x=State, y=Start, fill = factor(Theater)))+
+  geom_boxplot()+ 
+  coord_flip()
+```
 
 
 
