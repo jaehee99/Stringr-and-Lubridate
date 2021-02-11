@@ -232,10 +232,17 @@ separate(data = multiple_years, col = Date, sep = "-", into=c("Start", "End")) -
 ```
   
 7. Create a new data frame with all the battles and the Start and End  dates by binding the rows of the four data frames as updated in part 6 
+```{r}
+bind_rows(one_day_updated, multiple_days_one_month_updated,multiple_months_not_years_updated, multiple_years_updated) -> civil_war
+
+```
 
 8. Calculate the number of days each battle spanned.  
 - What's the longest battle of the war? 
 - How long did it last?
+```{r}
+
+```
 
 9. Is there an association between the CWSAC significance of a battle and its duration?  
 - Create an appropriate plot. 
