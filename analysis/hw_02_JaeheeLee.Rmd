@@ -154,29 +154,26 @@ civil_war_data %>%
 ```{r}
 month_regex <- stringr::str_c(month.name, collapse = "|") 
 month_regex
-
-
 civil_war_data_1 %>%  
-    mutate(month_names = str_extract_all(Date, month_regex)) %>%  
+  mutate(month_names = str_extract_all(Date, month_regex)) %>%  
   mutate(month_count = str_count(Date, month_regex)) -> civil_war_data_2
-
-
-
 ```
+
 
 4. Add a variable to the data frame that is `TRUE` if `Date` spans multiple days and is `FALSE` otherwise. Spanning multiple months and/or years also counts as `TRUE`.
 ```{r}
-civil_war_data_1 %>%  
-  mutate(multiple_days = if_else(Date == month day year,  "FALSE", "TRUE")) 
-  
-
+civil_war_data_2 %>%  
+  mutate(hyphen = str_detect(Date, "-")) %>%  
+  mutate(multiple_days = if_else(hyphen == "TRUE",  "TRUE", "FALSE")) -> civil_war_data_3
 ```
+
 
 5. Make four new data frames by filtering the data based on the length of the battles:  
    + a data frame with the data for only those battles spanning just one day, 
    + a data frame with the data for only those battles spanning multiple days in just one month, 
    + a data frame with the data for only those battles spanning multiple months but not multiple years, and,
    + a data frame with the data for only those battles spanning multiple years.
+
 
 6. For each of the four new data frames,  
   - Add two new variables:  
