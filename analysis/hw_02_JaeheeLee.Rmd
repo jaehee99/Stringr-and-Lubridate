@@ -165,6 +165,7 @@ civil_war_data_1 %>%
 civil_war_data_2 %>%  
   mutate(hyphen = str_detect(Date, "-")) %>%  
   mutate(multiple_days = if_else(hyphen == "TRUE",  "TRUE", "FALSE")) -> civil_war_data_3
+
 ```
 
 
