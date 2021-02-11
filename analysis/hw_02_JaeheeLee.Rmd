@@ -231,8 +231,8 @@ months_not_years_new$Start <- as.Date(months_not_years_new$Start, "%B %d _%Y")
 months_not_years_new$End <- as.Date(months_not_years_new$End, "%B %d, %Y")
 # 4
 separate(data = multiple_years, col = Date, sep = "-", into=c("Start", "End")) -> multiple_years_updated
-multiple_years_updated$Start <- as.Date(multiple_years_updated$Start, "%B %d, %Y")
-multiple_years_updated$End <- as.Date(multiple_years_updated$End, "%B %d, %Y")
+multiple_years_updated$Start <- as.Date(multiple_years_updated$Start, format = "%B %d, %Y")
+multiple_years_updated$End <- as.Date(multiple_years_updated$End, format ="B %d, %Y")
 ```
   
 7. Create a new data frame with all the battles and the Start and End  dates by binding the rows of the four data frames as updated in part 6 
@@ -244,16 +244,17 @@ bind_rows(one_day_updated, multiple_days_one_month_updated,multiple_months_not_y
 - What's the longest battle of the war? 
 - How long did it last?
 ```{r}
-
-
+civil_war %>%  
+  mutate(days = difftime(civil_war$Start, civil_war$End, units = "days" )) %>%  
+  arrange(-desc(days)) %>%  
+  head(1) %>%  
+  select(Battle, days) -> the_longest_battle
+the_longest_battle
 ```
 
 9. Is there an association between the CWSAC significance of a battle and its duration?  
 - Create an appropriate plot. 
 - Interpret the plot in one sentence to answer the question.
-```{r}
-
-```
 
 
 
