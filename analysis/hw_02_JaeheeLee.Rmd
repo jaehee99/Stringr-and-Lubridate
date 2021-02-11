@@ -143,7 +143,7 @@ year_regex
 
 civil_war_data %>%  
   mutate(year = str_extract_all(Date, year_regex)) %>%  
-  mutate(year_count = str_count(Date, year_regex))->civil_war_data_1
+  mutate(year_count = str_count(Date, year_regex))->civil_war_data
 ```
 
 3. Add a variable to the data frame with the number of months for each battle.  
@@ -154,26 +154,53 @@ civil_war_data %>%
 ```{r}
 month_regex <- stringr::str_c(month.name, collapse = "|") 
 month_regex
-civil_war_data_1 %>%  
+civil_war_data %>%  
   mutate(month_names = str_extract_all(Date, month_regex)) %>%  
-  mutate(month_count = str_count(Date, month_regex)) -> civil_war_data_2
+  mutate(month_count = str_count(Date, month_regex)) -> civil_war_data
 ```
 
 
 4. Add a variable to the data frame that is `TRUE` if `Date` spans multiple days and is `FALSE` otherwise. Spanning multiple months and/or years also counts as `TRUE`.
 ```{r}
-civil_war_data_2 %>%  
+civil_war_data %>%  
   mutate(hyphen = str_detect(Date, "-")) %>%  
-  mutate(multiple_days = if_else(hyphen == "TRUE",  "TRUE", "FALSE")) -> civil_war_data_3
+  mutate(multiple_days = if_else(hyphen == "TRUE",  "TRUE", "FALSE")) -> civil_war_data
 
 ```
 
 
 5. Make four new data frames by filtering the data based on the length of the battles:  
    + a data frame with the data for only those battles spanning just one day, 
+```{r}
+civil_war_data %>%
+  filter(multiple_days == "FALSE") -> one_day
+```
+   
    + a data frame with the data for only those battles spanning multiple days in just one month, 
+```{r}
+civil_war_data %>%  
+  filter(multiple_days == "TRUE") %>%  
+  filter(year_count == 1) %>%  
+  filter(month_count == 1) %>%  
+  filter(hyphen == "TRUE") -> multiple_days_one_month
+```
+   
+   
    + a data frame with the data for only those battles spanning multiple months but not multiple years, and,
+```{r}
+civil_war_data %>%  
+  filter(multiple_days == "TRUE") %>%  
+  filter(year_count == 1) %>%  
+  filter(month_count == 2) -> multiple_months_not_years
+```
+   
    + a data frame with the data for only those battles spanning multiple years.
+```{r}
+civil_war_data %>% 
+  filter(multiple_days == "TRUE") %>%  
+  filter(year_count == 2) -> multiple_years
+```
+   
 
 
 6. For each of the four new data frames,  
