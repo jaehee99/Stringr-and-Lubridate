@@ -211,6 +211,25 @@ civil_war_data %>%
     + Make sure these are `Date` class objects. 
   - Remove the `Date` variable from  each data frame.
   - Save the data frames with the new variables
+```{r}
+# 1 
+one_day %>% 
+  mutate(Start = Date) %>%  
+  mutate(End = Date) %>%  
+  select(-Date)-> one_day_updated
+#2 
+separate(data = multiple_days_one_month, col = Date, sep = "-", into = c("Start", "End")) -> multiple_days_one_month_updated
+multiple_days_one_month_updated %>%  
+  unite(Start, c("Start", "year")) %>%  
+  unite(End, c(End, month_names)) -> multiple_days_one_month_updated
+# 3 
+separate(data = multiple_months_not_years, col = Date, sep = "-", into = c("Start", "End")) -> multiple_months_not_years_updated
+multiple_months_not_years_updated %>%  
+  unite(Start, c("Start", "year")) -> multiple_months_not_years_updated
+
+# 4
+separate(data = multiple_years, col = Date, sep = "-", into=c("Start", "End")) -> multiple_years_updated
+```
   
 7. Create a new data frame with all the battles and the Start and End  dates by binding the rows of the four data frames as updated in part 6 
 
