@@ -48,6 +48,7 @@ load packages
 library(tidyverse)
 library(stringr)
 library(readr)
+library(lubridate)
 ```
 
 1. Use a readr function to load the 2015 list of Collins Scrabble Words into R from your data folder or from 
@@ -141,7 +142,8 @@ year_regex <- stringr::str_c(1861:1865, collapse = "|")
 year_regex
 
 civil_war_data %>%  
-  mutate(year = str_extract(Date, year_regex)) -> civil_war_data_1
+  mutate(year = str_extract_all(Date, year_regex)) %>%  
+  mutate(year_count = str_count(Date, year_regex))->civil_war_data_1
 ```
 
 3. Add a variable to the data frame with the number of months for each battle.  
@@ -149,9 +151,27 @@ civil_war_data %>%
 
 - Use `month.name` to count the number of month names in the `Date` variable in each battle. 
 - Add this to the data frame. (You might need to do something similar to what we did in part 2).
-    
+```{r}
+month_regex <- stringr::str_c(month.name, collapse = "|") 
+month_regex
+
+
+civil_war_data_1 %>%  
+    mutate(month_names = str_extract_all(Date, month_regex)) %>%  
+  mutate(month_count = str_count(Date, month_regex)) -> civil_war_data_2
+
+
+
+```
+
 4. Add a variable to the data frame that is `TRUE` if `Date` spans multiple days and is `FALSE` otherwise. Spanning multiple months and/or years also counts as `TRUE`.
-   
+```{r}
+civil_war_data_1 %>%  
+  mutate(multiple_days = if_else(Date == month day year,  "FALSE", "TRUE")) 
+  
+
+```
+
 5. Make four new data frames by filtering the data based on the length of the battles:  
    + a data frame with the data for only those battles spanning just one day, 
    + a data frame with the data for only those battles spanning multiple days in just one month, 
