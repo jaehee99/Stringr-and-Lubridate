@@ -252,14 +252,23 @@ bind_rows(one_day_updated, multiple_days_1month_new,months_not_years_new, multip
 - What's the longest battle of the war? 
 - How long did it last?
 ```{r}
+# 1 way to solve Question 8
+civil_war$days_spanned <- civil_war$End - civil_war$Start
 civil_war %>%  
-  mutate(days = difftime(civil_war$Start, civil_war$End, units = "days" )) %>%  
+  arrange(desc(days_spanned)) %>%  
+  head(1) %>%  
+  select(Battle, days_spanned)-> the_longest_battle_0
+the_longest_battle_0
+
+# 2 way to solve Question 8
+civil_war %>%
+  mutate(days = difftime(civil_war$Start, civil_war$End, units = "days")) %>%
   arrange(-desc(days)) -> civil_war_with_days
 civil_war_with_days$days <- abs(civil_war_with_days$days)
- 
-civil_war_with_days %>%  
-  head(1) %>%  
-  select(Battle, days) -> the_longest_battle
+
+civil_war_with_days %>%
+ head(1) %>%
+ select(Battle, days) -> the_longest_battle
 the_longest_battle
 ```
 
@@ -270,19 +279,25 @@ the_longest_battle
 # - Create an appropriate plot. 
 library(ggplot2)
 library(ggthemes)
-ggplot(data = civil_war_with_days, aes(y = days , x =factor(CWSAC)))+
+ggplot(data = civil_war, aes(y = days_spanned , x =factor(CWSAC)))+
   geom_boxplot(color="orange", fill="yellow", alpha=0.2)+ 
   xlab("CWSAC")+
   ylab("Days")+
   theme_classic()
+
 # - Interpret the plot in one sentence to answer the question.
 # When 'A rating of the military significance of the battle by the Civil War Sites Advisory Commission' is `A` = #Decisive,the days of the battle spanned have the highest median compared to other `B` = Major, `C` = Formative, `D` = #Limited
 
-# -Extra Credit: Test for a linear relationship using lm() and interpret the results in one sentence based on the p
-# -value and adjusted R-squared.
-fit <- lm(days ~ factor(CWSAC), data = civil_war_with_days)
-fit
+# -Extra Credit: Test for a linear relationship using lm() and interpret the results in one sentence based on the p-value and adjusted R-squared.
+
+# Convert to numeric value 
+civil_war$day_numeric = as.numeric(civil_war$days_spanned)/(24*60*60)
+
+fit <- lm(day_numeric ~ factor(CWSAC), data = civil_war)
+
 summary(fit)
+
+# Interpret the results: p-value is 2.026e-05, so p-value is very close to 0 indicating that the results are significant, and Adjusted R-squared is  0.0548, indicates that this fit is weak linear fit for the model, so maybe I have to change or add more variables. 
 ```
 
 10. Extra Credit: Did the theaters of war shift during the American Civil War?
@@ -290,9 +305,11 @@ summary(fit)
 -Interpret the plot in one sentence.
 ```{r}
 # Basic box plot
-ggplot(civil_war_with_days, aes(x=State, y=Start, fill = factor(Theater)))+
+ggplot(civil_war, aes(x=State, y=Start, fill = factor(Theater)))+
   geom_boxplot()+ 
   coord_flip()
+# sort order 
+# help document
 ```
 
 
