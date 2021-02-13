@@ -304,15 +304,39 @@ summary(fit)
 -Reproduce this plot in R (filter out states with two or fewer battles.)
 -Interpret the plot in one sentence.
 ```{r}
-# Basic box plot
-ggplot(civil_war, aes(x=State, y=Start, fill = factor(Theater)))+
-  geom_boxplot()+ 
-  coord_flip()
-# sort order 
-# help document
+civil_war %>%   
+  mutate(State = replace(State, State == "West Virginia (Virginia at the time)", "West Virginia")) %>%  
+  mutate(State = replace(State, State == "Oklahoma (Indian Territory at the time)", "Oklahoma")) %>%  
+  mutate(State = replace(State, State == "Colorado (Colorado Territory at the time)", "Colorado")) %>%  
+  mutate(State = replace(State, State == "North Dakota", "North Dakota (Dakota Territory  at the time)")) -> civil_war
+civil_war %>%  
+  group_by(State, Theater) %>%  
+  summarise(Freq=n()) %>%  
+  arrange(desc(Freq))  %>%  
+  tail(9) %>%  
+  ungroup()  -> filtered_out
+filtered_out
+```
+```{r}
+civil_war %>%  
+  filter(State != "Pennsylvania" ) %>%  
+  filter(State != "Colorado"  ) %>%  
+  filter(State != "New Mexico (New Mexico Territory at the time)" ) %>%  
+  filter(State != "North Dakota (Dakota Territory at the time)" ) %>%  
+  filter(State != "Ohio" ,)  %>%  
+  filter(State != "District of Columbia"  ) %>%  
+  filter(Battle != "Bear River Massacre") %>%  
+  filter(Battle != "Battle of Valverde") %>%  
+  filter(Battle != "Battle of Glorieta Pass") %>% 
+  filter(State != "Indiana" ) -> civil_war_1
 ```
 
 
+```{r}
+ ggplot(civil_war_1, aes(x=State, y=Start, fill = Theater))+
+  geom_boxplot()+ 
+  coord_flip()
+```
 
 
 
