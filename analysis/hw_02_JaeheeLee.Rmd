@@ -125,7 +125,7 @@ Variables include:
     
 1. Use a readr function and relative paths to load the data into R.
 ```{r}
-civil_war_data <- read_csv("civil_war_theater.csv")
+civil_war_data <- read_csv("../data/civil_war_theater.csv")
 str(civil_war_data)
 ```
 
