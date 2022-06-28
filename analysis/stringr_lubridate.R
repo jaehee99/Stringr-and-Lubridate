@@ -177,19 +177,3 @@ civil_war %>%
 ggplot(civil_war_1, aes(x=State, y=Start, fill = Theater))+
   geom_boxplot()+ 
   coord_flip()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
