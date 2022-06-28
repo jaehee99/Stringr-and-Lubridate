@@ -1,5 +1,5 @@
  ## Goal 
-To practice the usage of `stringr` and `lubridate` 
+To practice how to use of `stringr` and `lubridate` 
 ## Data
 1. `Collins Scrabble Words` https://en.wikipedia.org/wiki/Collins_Scrabble_Words
 2. `civil_war_theater.csv` https://en.wikipedia.org/wiki/List_of_American_Civil_War_battles
