@@ -1,6 +1,6 @@
 # load libraries 
 library(tidyverse)
-library(stringr) # big role in many data cleaning and preparation tasks
+library(stringr) # for string manipulations
 library(readr) # fast and friendly way to read rectangular data
 library(lubridate) # parse and manipulate dates
 library(ggthemes)
